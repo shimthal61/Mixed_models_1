@@ -71,12 +71,13 @@ mixed_model_data %>%
 (mixed_model_plot <- mixed_model_data %>% 
     ggplot(aes(x = condition, y = rt, colour = condition)) +
     geom_violin(width = 0.3) +
-    geom_point(position = position_jitter(width = 0.1, seed = 42)) +
+    geom_point(alpha = 0.8, position = position_jitter(width = 0.1, seed = 42)) +
     stat_summary(fun.data = "mean_cl_boot", colour = "black") +
     theme_minimal() +
     guides(colour = 'none') +
     labs(x = "Condition", 
-         y = "Reaction Time (ms)"))
+         y = "Reaction Time (ms)") +
+    scale_x_discrete(labels = c("Large", "Small")))
 
 #Now, let's build our linear model, taking into account individual participant and item differences
 mixed_model <- lmer(rt ~ condition + (1 | subject) + (1 | item), data = mixed_model_data)
