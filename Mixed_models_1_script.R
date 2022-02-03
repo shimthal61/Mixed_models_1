@@ -44,3 +44,35 @@ age_height_data %>%
          y = "Height (cm)", 
          title = "Relationship between Age and Height"))
     
+# It appears as though there is a positive relationship between age and height
+
+age_model <- lm(height ~ age, data = age_height_data)
+
+summary(age_model)
+
+#It appears as though people tend to grow 2.398cm every year (although we know this is not purely a linear relationship)
+
+# Mixed models
+
+library(lme4)
+library(lmerTest)
+
+mixed_model_data <- read_csv("https://raw.githubusercontent.com/ajstewartlang/15_mixed_models_pt1/master/data/mixed_model_data.csv")
+
+head(mixed_model_data)
+
+mixed_model_data <- mixed_model_data %>% 
+  mutate(subject = factor(subject),
+         item = factor(subject),
+         condition = factor(condition))
+
+# Let's generate some summary statistics
+
+mixed_model_data %>% 
+  group_by(condition) %>% 
+  summarise(mean = mean(rt), sd = sd(rt))
+
+#Now, let's build our linear model, taking into account individual participant and item differences
+mixed_model <- lmer(rt ~ condition + (1 | subject) + (1 | item), data = mixed_model_data)
+
+summary(mixed_model)
