@@ -61,18 +61,26 @@ mixed_model_data <- read_csv("https://raw.githubusercontent.com/ajstewartlang/15
 
 head(mixed_model_data)
 
-mixed_model_data <- mixed_model_data %>% 
-  mutate(subject = factor(subject),
-         item = factor(subject),
-         condition = factor(condition))
-
 # Let's generate some summary statistics
 
 mixed_model_data %>% 
+  mutate(condition = factor(condition)) %>% 
   group_by(condition) %>% 
   summarise(mean = mean(rt), sd = sd(rt))
+
+(mixed_model_plot <- mixed_model_data %>% 
+    ggplot(aes(x = condition, y = rt, colour = condition)) +
+    geom_violin(width = 0.3) +
+    geom_point(position = position_jitter(width = 0.1, seed = 42)) +
+    stat_summary(fun.data = "mean_cl_boot", colour = "black") +
+    theme_minimal() +
+    guides(colour = 'none') +
+    labs(x = "Condition", 
+         y = "Reaction Time (ms)"))
 
 #Now, let's build our linear model, taking into account individual participant and item differences
 mixed_model <- lmer(rt ~ condition + (1 | subject) + (1 | item), data = mixed_model_data)
 
 summary(mixed_model)
+
+#We can see in our fixed effects output that the mean for the large image rt is 854.14ms
