@@ -84,4 +84,31 @@ mixed_model <- lmer(rt ~ condition + (1 | subject) + (1 | item), data = mixed_mo
 
 summary(mixed_model)
 
-#We can see in our fixed effects output that the mean for the large image rt is 854.14ms
+#We can see in our fixed effects output that the mean for the large image rt is 854.14ms.
+# PPs were 49.78ms quicker when reacting to smaller images.
+
+# We can use the Likelihood Ratio Test (LRT) to determine whether a model which contains the fixed effect of condition 
+# is better than one which has only our random effects.
+
+mixed_model_null <- lmer(rt ~ (1 | subject) + (1 | item), data = mixed_model_data)
+
+
+#We can now carry out our LRT comparison using the anova function.
+anova(mixed_model, mixed_model_null)
+
+# We want to focus specifically on the AIC, BIC, and deviance scores. We can see that our mixed model has lower scores
+# across all of these parameters. This indicates that model with the fixed effect of condition explains more of the 
+# variability in our data than does the model with only random effects (and no fixed effect).
+
+# We now need to build a model which models the slopes of our random effects. By doing this, we are allowing the difference
+# between the two levels of our fixed effect to differ in magnitude from one participant to the next, and from one
+# item to the next. 
+
+mixed_model_slopes <- lmer(rt ~ condition + (1 + condition | subject) + (1 + condition | item), data = mixed_model_data)
+
+# We can investigate the model parameter estimates
+summary(mixed_model_slopes)
+
+# We can see that with a more complex random effect structure (i.e., random slopes as well as intercepts), the effect 
+# of our fixed effect of condition is still clearly there (and it is significant).
+
