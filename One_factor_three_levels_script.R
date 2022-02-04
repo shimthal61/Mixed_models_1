@@ -47,4 +47,5 @@ library(emmeans)
 
 emmeans(factor_1_model, pairwise ~ Condition)
 
-# 
+# Now that we have adjusted for multiple comparisons, we can see that only one of the conditions was positive - negative
+# vs positive stimuli. 
