@@ -71,7 +71,7 @@ mixed_model_data %>%
 (mixed_model_plot <- mixed_model_data %>% 
     ggplot(aes(x = condition, y = rt, colour = condition)) +
     geom_violin(width = 0.3) +
-    geom_point(alpha = 0.8, position = position_jitter(width = 0.1, seed = 42)) +
+    geom_point(alpha = 0.5, position = position_jitter(width = 0.1, seed = 42)) +
     stat_summary(fun.data = "mean_cl_boot", colour = "black") +
     theme_minimal() +
     guides(colour = 'none') +
@@ -111,4 +111,3 @@ summary(mixed_model_slopes)
 
 # We can see that with a more complex random effect structure (i.e., random slopes as well as intercepts), the effect 
 # of our fixed effect of condition is still clearly there (and it is significant).
-
