@@ -32,6 +32,8 @@ summary(height_model)
 
 age_height_data <- read_csv("https://raw.githubusercontent.com/ajstewartlang/15_mixed_models_pt1/master/data/age_height_data.csv")
 
+head(age_height_data)
+
 age_height_data %>% 
   mutate(subject = factor(subject))
 
